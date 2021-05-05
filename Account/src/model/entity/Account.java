@@ -7,7 +7,7 @@ public class Account {
 
 	private Integer number;
 	private String holder;
-	private Double balance;
+	private Double balance = 0.0;
 	private Double withDrawLimit = 300.0;
 
 	public Account() {
@@ -44,23 +44,21 @@ public class Account {
 	}
 
 	public void deposit(Double amount) {
-
-		this.balance += amount;
+		balance += amount;
 
 	}
 
 	public void withDraw(Double amount) {
-
-		this.balance = balance - amount;
+		balance -= amount;
 
 	}
 
 	public void validateWithDraw(Double amount) {
-		if (amount > withDrawLimit) {
+		if (amount > getWithDrawLimit()) {
 			throw new ErrorBalanceException("Withdraw error: The amount exceeds withdraw limit");
 		}
-		if (balance <= 0) {
-			throw new NotEnoughBalance("Not Enough Balance");
+		if (amount > getBalance()) {
+			throw new NotEnoughBalance("Error: Not Enough Balance");
 		}
 	}
 
