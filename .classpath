@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="Account/src"/>
+	<classpathentry kind="src" path="Calculadora/src"/>
+	<classpathentry kind="src" path="CalculadoraLayouts/src"/>
+	<classpathentry kind="src" path="FormularioJavaFX/src"/>
+	<classpathentry kind="src" path="FormularioLayout/src"/>
+	<classpathentry kind="output" path="Account/bin"/>
+</classpath>

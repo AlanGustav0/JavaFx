@@ -1,6 +1,9 @@
 package view;
 
+import java.awt.event.InputEvent;
+
 import javafx.application.Application;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,23 +13,48 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.entity.Account;
+import model.exceptions.ErrorBalanceException;
+import model.exceptions.NotEnoughBalance;
 
 public class Program extends Application {
 
 	class ControllerAction implements EventHandler<MouseEvent> {
 
 		Label lblTexto;
-		String message;
+		Account account = new Account();
 
-		public ControllerAction(Label lblTexto, String message) {
+		public ControllerAction(Label lblTexto) {
 			this.lblTexto = lblTexto;
-			this.message = message;
+
 		}
 
 		@Override
 		public void handle(MouseEvent event) {
 
-			this.lblTexto.setText(message);
+			lblTexto.setText(account.toString());
+
+		}
+
+	}
+
+	class InputAction implements EventHandler<MouseEvent> {
+
+		Account account;
+
+		public InputAction(Account account) {
+			this.account = account;
+		}
+
+		@Override
+		public void handle(MouseEvent event) {
+			
+			Double balance = Double.parseDouble(inputBalance.getText());
+			account.deposit(balance);
+
+			Double amount = Double.parseDouble(inputAmount.getText());
+			account.withDraw(amount);
+
+			
 
 		}
 
@@ -45,6 +73,7 @@ public class Program extends Application {
 	static Label lblWithDraw = new Label("Withdraw limit");
 	static Label lblMessageAmount = new Label("Enter amount for withdraw");
 	static Label lblMessage = new Label();
+	static Button btn = new Button("Calculate");
 
 	@Override
 	public void start(Stage stage) {
@@ -54,63 +83,74 @@ public class Program extends Application {
 		Account account = new Account();
 
 		Scene principalScene = new Scene(pane, 600, 400);
-		Button btn = new Button("Calculate");
 
 		alignLabels();
 		alignFields();
 
-		inputNumber.textProperty()
-				.addListener((observable) -> account.setNumber(Integer.parseInt(inputNumber.getText()))
+		try {
+			inputNumber.textProperty()
+					.addListener((observable) -> account.setNumber(Integer.parseInt(inputNumber.getText()))
 
-				);
+					);
 
-		inputHolder.textProperty().addListener(
+			inputHolder.textProperty().addListener(
 
-				(observable) -> account.setHolder(inputHolder.getText()));
+					(observable) -> account.setHolder(inputHolder.getText()));
 
-		inputBalance.textProperty().addListener((observable) -> {
-			Double balance = Double.parseDouble(inputBalance.getText());
-			account.deposit(balance);
-		});
+			/*
+			 * inputBalance.textProperty().addListener((observable) -> { Double balance =
+			 * Double.parseDouble(inputBalance.getText()); account.deposit(balance); });
+			 */
 
-		lblWithDrawValue.setText(account.getWithDrawLimit().toString());
+			lblWithDrawValue.setText(account.getWithDrawLimit().toString());
 
-		inputAmount.textProperty().addListener((observable) -> {
-			Double amount = Double.parseDouble(inputAmount.getText());
-			account.withDraw(amount);
-			String message = account.toString();
+			/*
+			 * inputAmount.textProperty().addListener((observable) -> {
+			 * 
+			 * });
+			 */
 
-			btn.addEventFilter(MouseEvent.MOUSE_PRESSED, new ControllerAction(lblNewBalance, message));
-		});
+			inputBalance.addEventFilter(MouseEvent.MOUSE_PRESSED, new InputAction(account));
+			inputAmount.addEventFilter(MouseEvent.MOUSE_PRESSED, new InputAction(account));
 
-		/*
-		 * inputBalance.textProperty().addListener(new ChangeListener<String>() {
-		 * 
-		 * @Override public void changed(ObservableValue<? extends String> observable,
-		 * String oldValue, String newValue) { try { Double balance =
-		 * Double.parseDouble(inputBalance.getText()); account.deposit(balance); } catch
-		 * (Exception e) { lblMessage.setText("Type Error"); }
-		 * 
-		 * }
-		 * 
-		 * });
-		 * 
-		 * 
-		 * inputNumber.textProperty().addListener(
-		 * 
-		 * (observable) -> lblResultado.setText(inputNumber.getText())
-		 * 
-		 * );
-		 */
-		btn.relocate(250, 350);
+			btn.addEventFilter(MouseEvent.MOUSE_PRESSED, new ControllerAction(lblNewBalance));
 
-		pane.getChildren().addAll(inputNumber, inputHolder, inputBalance, lblWithDrawValue, inputAmount, lblNewBalance,
-				lblNumber, lblHolder, lblInitialBalance, lblWithDraw, lblMessageAmount, lblMessage, btn);
+			/*
+			 * inputBalance.textProperty().addListener(new ChangeListener<String>() {
+			 * 
+			 * @Override public void changed(ObservableValue<? extends String> observable,
+			 * String oldValue, String newValue) { try { Double balance =
+			 * Double.parseDouble(inputBalance.getText()); account.deposit(balance); } catch
+			 * (Exception e) { lblMessage.setText("Type Error"); }
+			 * 
+			 * }
+			 * 
+			 * });
+			 * 
+			 * 
+			 * inputNumber.textProperty().addListener(
+			 * 
+			 * (observable) -> lblResultado.setText(inputNumber.getText())
+			 * 
+			 * );
+			 */
 
-		stage.setTitle("Account System");
-		stage.setScene(principalScene);
-		stage.sizeToScene();
-		stage.show();
+			pane.getChildren().addAll(inputNumber, inputHolder, inputBalance, lblWithDrawValue, inputAmount,
+					lblNewBalance, lblNumber, lblHolder, lblInitialBalance, lblWithDraw, lblMessageAmount, lblMessage,
+					btn);
+
+			stage.setTitle("Account System");
+			stage.setScene(principalScene);
+			stage.sizeToScene();
+			stage.show();
+
+		} catch (ErrorBalanceException e) {
+			System.out.println(e.getMessage());
+		} catch (NotEnoughBalance e) {
+			System.out.println(e.getMessage());
+		} catch (Exception e) {
+			System.out.println("erro");
+		}
 
 	}
 
@@ -124,6 +164,7 @@ public class Program extends Application {
 		lblMessageAmount.relocate(x, 180);
 		lblMessage.relocate(x, 240);
 		lblNewBalance.relocate(x, 220);
+		btn.relocate(250, 350);
 
 	}
 

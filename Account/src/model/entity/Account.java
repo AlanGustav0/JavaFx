@@ -1,6 +1,7 @@
 package model.entity;
 
 import model.exceptions.ErrorBalanceException;
+import model.exceptions.NotEnoughBalance;
 
 public class Account {
 
@@ -8,9 +9,9 @@ public class Account {
 	private String holder;
 	private Double balance;
 	private Double withDrawLimit = 300.0;
-	
-	public Account() {}
 
+	public Account() {
+	}
 
 	public Integer getNumber() {
 		return number;
@@ -31,37 +32,36 @@ public class Account {
 	public Double getBalance() {
 		return balance;
 	}
-	
 
 	public Double getWithDrawLimit() {
 		return withDrawLimit;
 	}
-	
 
 	@Override
 	public String toString() {
-		return "Number: " + number + "\n"
-			+ "Holder: " + holder + "\n"
-			+ "New Balance: " + balance;
-				
-	}
-	
-	public void deposit(Double amount) {
-		
-		this.balance = amount;
-		
-	}
-	
-	public void withDraw(Double amount){
+		return "Number: " + number + "\n" + "Holder: " + holder + "\n" + "New Balance: " + balance;
 
-		if(amount > withDrawLimit) {
-			throw new ErrorBalanceException("Withdraw error: The amount exceeds withdraw limit");	
-		}else {
-			this.balance = getBalance() - amount;
+	}
+
+	public void deposit(Double amount) {
+
+		this.balance += amount;
+
+	}
+
+	public void withDraw(Double amount) {
+
+		this.balance = balance - amount;
+
+	}
+
+	public void validateWithDraw(Double amount) {
+		if (amount > withDrawLimit) {
+			throw new ErrorBalanceException("Withdraw error: The amount exceeds withdraw limit");
 		}
-		
-		
-			
+		if (balance <= 0) {
+			throw new NotEnoughBalance("Not Enough Balance");
+		}
 	}
 
 }
