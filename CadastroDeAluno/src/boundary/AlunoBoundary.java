@@ -22,10 +22,8 @@ public class AlunoBoundary extends Application implements EventHandler<ActionEve
 	TextField txtDataNasc = new TextField();
 	Button btnAdicionar = new Button("Adicionar");
 	Button btnPesquisar = new Button("Pesquisar");
-
 	private DateTimeFormatter date = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private AlunoControl control = new AlunoControl();
-
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -77,13 +75,20 @@ public class AlunoBoundary extends Application implements EventHandler<ActionEve
 		return aluno;
 	}
 
+	public void clearAll() {
+		txtId.clear();
+		txtRa.clear();
+		txtNome.clear();
+		txtDataNasc.clear();
+	}
+
 	@Override
 	public void handle(ActionEvent event) {
 		Aluno aluno;
 		if (event.getSource() == btnAdicionar) {
 			aluno = boundaryToEntity();
 			control.adicionaAluno(aluno);
-			//entityToBoundary(new Aluno());
+			clearAll();
 
 		} else if (event.getSource() == btnPesquisar) {
 			aluno = control.pesquisaPorNome(txtNome.getText());
