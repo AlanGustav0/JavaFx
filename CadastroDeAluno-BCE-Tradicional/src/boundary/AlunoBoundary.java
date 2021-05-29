@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -23,7 +24,7 @@ public class AlunoBoundary extends Application {
 	TextField txtDataNasc = new TextField();
 	Button btnAdicionar = new Button("Adicionar");
 	Button btnPesquisar = new Button("Pesquisar");
-	
+
 	private DateTimeFormatter date = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private AlunoControl control = new AlunoControl();
 
@@ -31,7 +32,8 @@ public class AlunoBoundary extends Application {
 	public void start(Stage stage) throws Exception {
 
 		GridPane panel = new GridPane();
-		Scene scn = new Scene(panel, 600, 200);
+		BorderPane panePrincipal = new BorderPane();
+		Scene scn = new Scene(panePrincipal, 600, 200);
 
 		panel.add(new Label("ID"), 0, 0);
 		panel.add(new Label("RA"), 0, 1);
@@ -45,6 +47,10 @@ public class AlunoBoundary extends Application {
 
 		panel.add(btnAdicionar, 0, 4);
 		panel.add(btnPesquisar, 1, 4);
+		
+		control.generateTable();
+		panePrincipal.setTop(panel);
+		panePrincipal.setCenter(control.getTable());
 
 		btnAdicionar.setOnAction((e) -> {
 			control.adicionaAluno();
