@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.calculosoma.ViewController">
+   <children>
+      <Label layoutX="41.0" layoutY="50.0" text="Calculate sum">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtNumberOne" layoutX="41.0" layoutY="86.0" promptText="First number" />
+      <TextField fx:id="txtNumberTwo" layoutX="41.0" layoutY="134.0" promptText="Second number" />
+      <Button fx:id="btSum" layoutX="41.0" layoutY="188.0" mnemonicParsing="false" onAction="#onSumButonClick" text="Sum" />
+      <Label layoutX="47.0" layoutY="262.0" prefHeight="17.0" prefWidth="64.0" text="Result =" />
+      <Label fx:id="labelResult" layoutX="104.0" layoutY="262.0" prefHeight="17.0" prefWidth="51.0" />
+   </children>
+</AnchorPane>
